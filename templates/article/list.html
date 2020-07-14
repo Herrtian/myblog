@@ -9,30 +9,54 @@
 
 <!-- 写入 base.html 中定义的 content -->
 {% block content %}
+    <div class="first-content">
+        <div class="pic home-picture" style="background: url({% static "assets/images/acgbg.png" %});">
+            <div class="overlay"></div>
+            <div class="content">
+                <h3 id="welcome">Welcome to Herrtian</h3>
+            </div>
+        </div>
+    </div>
 
-    <!-- 定义放置文章标题的div容器 -->
-    <div class="container">
-        <div class="row mt-2">
 
+    <div class="container width-size">
+        <div class="second-section">
+
+            <div class="filters">
+                <ul id="filters">
+                    <li class="active" data-filter="*">All</li>
+                    <li data-filter=".design">Design</li>
+                    <li data-filter=".photography">Photography</li>
+                    <li data-filter=".art">Art Work</li>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="row masonry">
             {% for article in articles %}
-                <!-- 文章内容 -->
-                <div class="col-4 mb-4">
-                    <!-- 卡片容器 -->
-                    <div class="card h-100">
-                        <!-- 标题 -->
-                        <h4 class="card-header">{{ article.title }}</h4>
-                        <!-- 摘要 -->
-                        <div class="card-body">
-                            <p class="card-text">{{ article.body|slice:'100' }}...</p>
-                        </div>
-                        <!-- 注脚 -->
-                        <div class="card-footer">
-                            <a href="#" class="btn btn-primary">阅读本文</a>
+                <div class="col-md-3 col-sm-6 col-xs-12 selector design">
+                    <div class="item">
+                        <img src="{% static "assets/images/pencil.jpg" %}" alt="">
+                        <div class="overlay">
+                            <div class="overlay-inner">
+                                <h3><a href="single1.html">{{ article.title }}</a></h3>
+                                <h5><a href="single1.html">Design</a></h5>
+                            </div>
                         </div>
                     </div>
                 </div>
             {% endfor %}
+        </div>
 
+
+        <div class="btn-load-more">
+            <button class="load-more">
+                Load More
+            </button>
         </div>
     </div>
+
+
+
 {% endblock content %}
