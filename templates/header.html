@@ -21,7 +21,7 @@
                 <div id="menu" class="menu">
                     <ul>
                         <li><a href="{% url 'article:article_list' %}" class="active">主页</a></li>
-                        <li><a href="about.html">赞助</a></li>
+                        <li><a href="{% url 'article:article_create' %}">写文章</a></li>
                         <li>
                             <a href="#">导航</a>
                             <ul>
@@ -61,7 +61,7 @@
                             </ul>
                         </li>
                         <li><a href="{% url 'article:article_list' %}">Blog</a></li>
-                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="contact.html">登录</a></li>
                     </ul>
                 </div>
             </div>

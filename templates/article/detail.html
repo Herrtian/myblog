@@ -9,37 +9,60 @@
 <!-- 写入 base.html 中定义的 content -->
 {% block content %}
 
-<!-- 文章详情 -->
-        <div class="first-content">
-            <div class="pic index2-picture" style="background: url({% static "assets/images/view.jpeg" %});">
-                <div class="overlay"></div>
-                <div class="content">
-                    <h3>ARTICLE DETAIL</h3>
+    <!-- 文章详情 -->
+    <div class="first-content">
+        <div class="pic index2-picture" style="background: url({% static "assets/images/view.jpeg" %});">
+            <div class="overlay"></div>
+            <div class="content">
+                <h3>ARTICLE DETAIL</h3>
+            </div>
+        </div>
+    </div>
+    <div class="index2-content">
+        <div class="container">
+            <div class="row items1">
+                <div class="col-md-7">
+                    <h3>{{ article.title }}</h3>
+                    <p>{{ article.body }}</p>
+                    <div class="details">
+                        <h6>Author : {{ article.author }} </h6>
+
+                        <span>CreateTime {{ article.created }}</span>
+                        <h6> Categories </h6>
+                        <span>Design</span>
+                        <h6> Update </h6>
+                        <span>UpdateTime {{ article.updated }}</span>
+                        <br><br><br>
+
+                        · <a href="#" onclick="confirm_delete()">删除文章</a>
+                        · <a href="{% url "article:article_update" article.id %}">编辑文章</a>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <img src="{% static "assets/images/pen.jpg" %}" alt="">
+                    <img src=" {% static "assets/images/about4.png" %} " alt="">
                 </div>
             </div>
         </div>
-        <div class="index2-content">
-            <div class="container">
-                <div class="row items1">
-                    <div class="col-md-7">
-                        <h3>{{ article.title }}</h3>
-                        <p>{{ article.body }}</p>
-                        <div class="details">
-                            <h6> {{ article.author }} </h6>
-                            <span> {{ article.created }}</span>
-                            <h6> Categories </h6>
-                            <span>Design</span>
-                            <h6> Date </h6>
-                            <span>07-09-2016</span>
-                        </div>
-                    </div>
-                    <div class="col-md-5">
-                        <img src="{% static "assets/images/pen.jpg"%}" alt="">
-                       <img src=" {% static "assets/images/about4.png"%} " alt="">
-                    </div>
-                </div>
-            </div>
-        </div>
+    </div>
+
+    <script>
+        // 删除文章的函数
+        function confirm_delete() {
+            // 调用layer弹窗组件
+            layer.open({
+                // 弹窗标题
+                title: "确认删除",
+                // 正文
+                content: "确认删除这篇文章吗？",
+                // 点击确定按钮后调用的回调函数
+                yes: function (index, layero) {
+                    // 指定应当前往的 url
+                    location.href = '{% url "article:article_delete" article.id %}'
+                },
+            })
+        }
+    </script>
 
 
 
