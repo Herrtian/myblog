@@ -18,10 +18,8 @@
         </div>
     </div>
 
-
-    <div class="container width-size">
+    <div class="container width-size blog-firstsection">
         <div class="second-section">
-
             <div class="filters">
                 <ul id="filters">
                     <li class="active" data-filter="*">All</li>
@@ -31,32 +29,40 @@
                 </ul>
             </div>
         </div>
+        <div class="container">
+            <div class="row masonry ">
+                {% for article in articles %}
+                <div class="col-md-4 col-sm-6 col-xs-12 selector">
 
-
-        <div class="row masonry">
-            {% for article in articles %}
-                <div class="col-md-3 col-sm-6 col-xs-12 selector design">
-                    <div class="item">
-                        <img src="{% static "assets/images/pencil.jpg" %}" alt="">
+                    <div class="item picture">
+                        <img src={% static "assets/images/pencil.jpg" %} alt="">
                         <div class="overlay">
                             <div class="overlay-inner">
-                                <h3><a href="single1.html">{{ article.title }}</a></h3>
-                                <h5><a href="single1.html">Design</a></h5>
+                                <h3><a href="{% url 'article:article_detail' article.id %}" >{{ article.title }}</a></h3>
+                                <h5><a href="{% url 'article:article_detail' article.id %}" >{{ article.created }}</a></h5>
                             </div>
                         </div>
                     </div>
+
+                    <div class="pic-inner">
+                        <h3 align="center"><a href="{% url 'article:article_detail' article.id %}" >{{ article.title }} </a></h3>
+                        <span style="float:right;">作者：   {{ article.author }}</span>
+                        <br/>
+                        <span style="float:right;">更新日期：  {{ article.updated }}</span>
+{#                        <p>{{ article.body }}</p>#}
+                        <div class="btn-load-more">
+                            <a class="load-more" href="{% url 'article:article_detail' article.id %}" >Read More</a>
+                        </div>
+                    </div>
                 </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
         </div>
-
-
         <div class="btn-load-more">
             <button class="load-more">
                 Load More
             </button>
         </div>
     </div>
-
-
 
 {% endblock content %}

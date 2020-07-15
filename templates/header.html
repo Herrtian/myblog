@@ -14,13 +14,13 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="logo">
-                    <h2><a href="index.html">Herrtian</a></h2>
+                    <h2><a href="{% url 'article:article_list' %}">Herrtian</a></h2>
                 </div>
             </div>
             <div class="col-md-8">
                 <div id="menu" class="menu">
                     <ul>
-                        <li><a href="index.html" class="active">主页</a></li>
+                        <li><a href="{% url 'article:article_list' %}" class="active">主页</a></li>
                         <li><a href="about.html">赞助</a></li>
                         <li>
                             <a href="#">导航</a>
@@ -60,7 +60,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="{% url 'article:article_list' %}">Blog</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </div>
