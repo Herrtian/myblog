@@ -30,7 +30,10 @@
 <!-- 引入导航栏 -->
 {% include 'header.html' %}
 <!-- 预留具体页面的位置 -->
-{% block content %}{% endblock content %}
+<div style="background: url({% static "assets/images/little-monster.png" %});">
+    {% block content %}{% endblock content %}
+</div>
+
 <!-- 引入注脚 -->
 {% include 'footer.html' %}
 <!-- bootstrap.js 依赖 jquery.js 和popper.js，因此在这里引入 -->

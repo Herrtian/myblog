@@ -18,7 +18,7 @@
         </div>
     </div>
 
-    <div class="container width-size blog-firstsection">
+    <div class="container width-size blog-firstsection" style="background-color: rgba(255, 255, 255, 0.8); ">
         <div class="second-section">
             <div class="filters">
                 <ul id="filters">
@@ -48,6 +48,8 @@
                         <h3 align="center"><a href="{% url 'article:article_detail' article.id %}" >{{ article.title }} </a></h3>
                         <span style="float:right;">作者：   {{ article.author }}</span>
                         <br/>
+                        <span style="float:right;">热度：   {{ article.total_views }}</span>
+                        <br/>
                         <span style="float:right;">更新日期：  {{ article.updated }}</span>
 {#                        <p>{{ article.body }}</p>#}
                         <div class="btn-load-more">
@@ -58,11 +60,13 @@
                 {% endfor %}
             </div>
         </div>
+
         <div class="btn-load-more">
             <button class="load-more">
                 Load More
             </button>
         </div>
+
     </div>
 
 {% endblock content %}

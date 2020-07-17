@@ -19,11 +19,11 @@
         </div>
     </div>
     <div class="index2-content">
-        <div class="container">
+        <div class="container" style="background-color: rgba(255, 255, 255, 0.8);">
             <div class="row items1">
-                <div class="col-md-7">
+                <div class="col-md-7" style="font-size: 20px">
                     <h3>{{ article.title }}</h3>
-                    <p>{{ article.body }}</p>
+                    <p style="font-size: 23px">{{ article.body|safe }}</p>
                     <div class="details">
                         <h6>Author : {{ article.author }} </h6>
 
@@ -33,17 +33,74 @@
                         <h6> Update </h6>
                         <span>UpdateTime {{ article.updated }}</span>
                         <br><br><br>
-
-                        · <a href="#" onclick="confirm_delete()">删除文章</a>
-                        · <a href="{% url "article:article_update" article.id %}">编辑文章</a>
+                        {% if user == article.author %}
+                            · <a href="#" onclick="confirm_delete()">删除文章</a>
+                            · <a href="{% url "article:article_update" article.id %}">编辑文章</a>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="col-md-5">
                     <img src="{% static "assets/images/pen.jpg" %}" alt="">
                     <img src=" {% static "assets/images/about4.png" %} " alt="">
                 </div>
+                <!-- 发表评论 -->
+                <hr>
+                {% if user.is_authenticated %}
+                    <div>
+                        <form
+                                action="{% url 'comment:post_comment' article.id %}"
+                                method="POST"
+                        >
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="body">
+                                    <strong>
+                                        我也要发言：
+                                    </strong>
+                                </label>
+                                <textarea
+                                        type="text"
+                                        class="form-control"
+                                        id="body"
+                                        name="body"
+                                        rows="2"></textarea>
+                            </div>
+                            <!-- 提交按钮 -->
+                            <button type="submit" class="btn btn-primary ">发送</button>
+                        </form>
+                    </div>
+                    <br>
+                {% else %}
+                    <br>
+                    <h5 class="row justify-content-center">
+                        请<a href="{% url 'userprofile:login' %}">登录</a>后回复
+                    </h5>
+                    <br>
+                {% endif %}
+
+
+
+                <!-- 显示评论 -->
+                <h4>共有{{ comments.count }}条评论</h4>
+                <div>
+                    {% for comment in comments %}
+                        <hr>
+                        <p>
+                            <strong style="color: pink">
+                                {{ comment.user }}
+                            </strong> 于
+                            <span style="color: green">
+                    {{ comment.created|date:"Y-m-d H:i:s" }}
+                </span> 时说：
+                        </p>
+                        <pre style="font-family: inherit; font-size: 1em;">
+{{ comment.body }}</pre>
+                    {% endfor %}
+                </div>
             </div>
+
         </div>
+    </div>
     </div>
 
     <script>
