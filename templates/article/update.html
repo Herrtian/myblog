@@ -15,22 +15,61 @@
         <div class="row">
             <div class="col-12">
                 <br>
-                <form method="post" action=".">
+                <form method="post" action="." enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="title">文章标题</label>
                         <!-- 在 value 属性中指定文本框的初始值为旧的内容，即 article 对象中的 title 字段 -->
                         <input type="text" class="form-control" id="title" name="title" value="{{ article.title }}">
                     </div>
+
+                    <div class="form-group">
+                        <label for="avatar">标题图</label>
+                        <input type="file" class="form-control-file" name="avatar" id="avatar">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="column">栏目</label>
+                        <select class="form-control"
+                                id="column"
+                                name="column"
+                        >
+                            <option value="none">请选择栏目..</option>
+                            {% for column in columns %}
+                                <option value="{{ column.id }}"
+                                        {% if column.id == article.column.id %}
+                                        selected
+                                        {% endif %}
+                                >
+                                    {{ column }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
                     <div class="form-group">
                         <label for="body">文章正文</label>
-                        <!-- 文本域不需要 value 属性，直接在标签体中嵌入数据即可 -->
-                        <textarea type="text" class="form-control" id="body" name="body" rows="12"
-                                  style="height: 500px">{{ article.body }}</textarea>
+                        <div>
+                            {{ article_form.media }}
+                            {{ article_form.body }}
+                        </div>
+
                     </div>
                     <button type="submit" class="btn btn-primary">完成</button>
                 </form>
             </div>
         </div>
     </div>
+
+    {% block script %}
+        <script>
+            $(".django-ckeditor-widget").removeAttr('style');
+
+
+
+        </script>
+    {% endblock script %}
+
+
 {% endblock content %}

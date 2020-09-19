@@ -37,15 +37,20 @@
 <!-- 引入注脚 -->
 {% include 'footer.html' %}
 <!-- bootstrap.js 依赖 jquery.js 和popper.js，因此在这里引入 -->
-<script src="{% static 'jquery/jquery-3.3.1.js' %}"></script>
-<script src="{% static 'assets/js/jquery-2.1.4.js' %}"></script>
-<script src="{% static 'assets/js/jquery.slicknav.js' %}"></script>
-<script src="{% static 'assets/js/isotope.pkgd.min.js' %}"></script>
-<script src="{% static 'assets/js/owl.carousel.js' %}"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/SlickNav/1.0.0/jquery.slicknav.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"></script>
 <script src="{% static 'assets/js/main.js' %}"></script>
 <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'layer/layer.js' %}"></script>
+<script src="{% static 'ckeditor/ckeditor/plugins/prism/lib/prism/prism_patched.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'prism/prism.css' %}">
+
+
+{% block script %}{% endblock script %}
 
 
 </body>

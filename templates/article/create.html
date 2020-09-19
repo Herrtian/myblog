@@ -3,7 +3,7 @@
 {% block content %}
 
     <div class="first-content">
-        <div class="pic index2-picture" style="background: url({% static "assets/images/view.jpeg" %});">
+        <div class="pic index2-picture" style="background: url({% static "assets/images/acgbg3.png" %});">
             <div class="overlay"></div>
             <div class="content">
                 <h3>ARTICLE CREATE</h3>
@@ -16,7 +16,7 @@
             <div class="col-12">
                 <br>
                 <!-- 提交文章的表单 -->
-                <form method="post" action=".">
+                <form method="post" action="." enctype="multipart/form-data">
                     <!-- Django中需要POST数据的地方都必须有csrf_token -->
                     {% csrf_token %}
                     <!-- 文章标题 -->
@@ -26,11 +26,35 @@
                         <!-- 文本框 -->
                         <input type="text" class="form-control" id="title" name="title">
                     </div>
+
+                    <div class="form-group">
+                        <label for="avatar">标题图</label>
+                        <input type="file" class="form-control-file" name="avatar" id="avatar">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="column">栏目</label>
+                        <select class="form-control"
+                                id="column"
+                                name="column"
+                        >
+                            <option value="none">请选择栏目..</option>
+                            {% for column in columns %}
+                                <option value="{{ column.id }}">{{ column }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
                     <!-- 文章正文 -->
                     <div class="form-group">
                         <label for="body">文章正文</label>
-                        <!-- 文本区域 -->
-                        <textarea type="text" class="form-control" id="body" name="body" rows="12" style="height: 500px"></textarea>
+
+                        <div>
+                            {{ article_form.media }}
+                            {{ article_form.body }}
+                        </div>
+
+
                     </div>
                     <!-- 提交按钮 -->
                     <button type="submit" class="btn btn-primary">完成</button>
@@ -38,4 +62,19 @@
             </div>
         </div>
     </div>
+
+    <style>
+    .current {
+        height: 600px;
+    }
+
+    </style>
+
+    {% block script %}
+        <script>
+            $(".django-ckeditor-widget").removeAttr('style');
+
+        </script>
+    {% endblock script %}
+
 {% endblock content %}

@@ -1,10 +1,14 @@
-from .models import ArticlePost
+from .models import ArticlePost, ArticleColumn
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .forms import ArticlePostForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from comment.models import Comment
+from comment.forms import CommentForm
+from userprofile.models import Profile
+from userprofile.forms import ProfileForm
+
 import markdown
 
 
@@ -29,14 +33,16 @@ def article_detail(request, id):
             'markdown.extensions.toc',
         ]
     )
+    comment_form = CommentForm()
 
     article.total_views += 1
     article.save(update_fields=['total_views'])
     comments = Comment.objects.filter(article=id)
 
+    # profile = Profile.objects.filter(user=comments.created)
     article.body = md.convert(article.body)
-
-    context = {'article': article, 'toc': md.toc, 'comments': comments}
+    context = {'article': article, 'toc': md.toc, 'comments': comments, 'comment_form': comment_form,
+              }
     # 载入模板，并返回context对象
     return render(request, 'article/detail.html', context)
 
@@ -46,13 +52,17 @@ def article_create(request):
     # 判断用户是否提交数据
     if request.method == "POST":
         # 将提交的数据赋值到表单实例中
-        article_post_form = ArticlePostForm(data=request.POST)
+        article_post_form = ArticlePostForm(request.POST, request.FILES)
+
         # 判断提交的数据是否满足模型的要求
         if article_post_form.is_valid():
             # 保存数据，但暂时不提交到数据库中
             new_article = article_post_form.save(commit=False)
             new_article.author = User.objects.get(id=request.user.id)
             # 将新文章保存到数据库中
+            if request.POST['column'] != 'none':
+                new_article.column = ArticleColumn.objects.get(id=request.POST['column'])
+
             new_article.save()
             # 完成后返回到文章列表
             return redirect("article:article_list")
@@ -61,11 +71,12 @@ def article_create(request):
             return HttpResponse("表单内容有误，请重新填写。")
     # 如果用户请求获取数据
     else:
-        # 创建表单类实例
+
         article_post_form = ArticlePostForm()
-        # 赋值上下文
-        context = {'article_post_form': article_post_form}
-        # 返回模板
+        columns = ArticleColumn.objects.all()
+        article_form = ArticlePostForm()
+        context = {'article_post_form': article_post_form, 'columns': columns, 'article_form':article_form}
+
         return render(request, 'article/create.html', context)
 
 
@@ -104,6 +115,13 @@ def article_update(request, id):
             # 保存新写入的 title、body 数据并保存
             article.title = request.POST['title']
             article.body = request.POST['body']
+
+
+            if request.POST['column'] != 'none':
+                article.column = ArticleColumn.objects.get(id=request.POST['column'])
+            else:
+                article.column = None
+
             article.save()
             # 完成后返回到修改后的文章中。需传入文章的 id 值
             return redirect("article:article_detail", id=id)
@@ -116,6 +134,13 @@ def article_update(request, id):
         # 创建表单类实例
         article_post_form = ArticlePostForm()
         # 赋值上下文，将 article 文章对象也传递进去，以便提取旧的内容
-        context = {'article': article, 'article_post_form': article_post_form}
-        # 将响应返回到模板中
+        columns = ArticleColumn.objects.all()
+        article_form = ArticlePostForm()
+        context = {
+            'article': article,
+            'article_post_form': article_post_form,
+            'columns': columns,
+            'article_form':article_form,
+        }
+
         return render(request, 'article/update.html', context)

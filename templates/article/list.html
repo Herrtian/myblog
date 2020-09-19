@@ -9,12 +9,15 @@
 
 <!-- 写入 base.html 中定义的 content -->
 {% block content %}
+    <!-- 文章详情 -->
     <div class="first-content">
-        <div class="pic home-picture" style="background: url({% static "assets/images/acgbg.png" %});">
+        <div class="pic index2-picture" style="background: url({% static "assets/images/acgbg.png" %});">
             <div class="overlay"></div>
+
             <div class="content">
                 <h3 id="welcome">Welcome to Herrtian</h3>
             </div>
+
         </div>
     </div>
 
@@ -23,40 +26,56 @@
             <div class="filters">
                 <ul id="filters">
                     <li class="active" data-filter="*">All</li>
-                    <li data-filter=".design">Design</li>
-                    <li data-filter=".photography">Photography</li>
-                    <li data-filter=".art">Art Work</li>
+                    <li data-filter=".随笔">随笔</li>
+                    <li data-filter=".编程">编程</li>
+                    <li data-filter=".漫评">漫评</li>
+                    <li data-filter=".游戏">游戏</li>
                 </ul>
             </div>
         </div>
         <div class="container">
             <div class="row masonry ">
                 {% for article in articles %}
-                <div class="col-md-4 col-sm-6 col-xs-12 selector">
+                    <div class="col-md-4 col-sm-6 col-xs-12 selector {{ article.column.title }}">
 
-                    <div class="item picture">
-                        <img src={% static "assets/images/pencil.jpg" %} alt="">
-                        <div class="overlay">
-                            <div class="overlay-inner">
-                                <h3><a href="{% url 'article:article_detail' article.id %}" >{{ article.title }}</a></h3>
-                                <h5><a href="{% url 'article:article_detail' article.id %}" >{{ article.created }}</a></h5>
+                        <div class="item picture">
+
+                            {% if article.avatar %}
+
+                                <img src="{{ article.avatar.url }}"
+                                     alt="avatar"
+                                     style="max-width:100%; border-radius: 20px"
+                                >
+
+                            {% endif %}
+
+                            <div class="overlay">
+                                <div class="overlay-inner">
+                                    <h3><a href="{% url 'article:article_detail' article.id %}">{{ article.title }}</a>
+                                    </h3>
+                                    <h5>
+                                        <a href="{% url 'article:article_detail' article.id %}">{{ article.created }}</a>
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pic-inner">
+                            <h3 align="center"><a
+                                    href="{% url 'article:article_detail' article.id %}">{{ article.title }} </a></h3>
+                            <span style="float:right;">作者： {{ article.author }}</span>
+                            <br/>
+                            <span style="float:right;">热度： {{ article.total_views }}</span>
+                            <br/>
+                            <span style="float:right;">更新日期： {{ article.updated }}</span>
+                            <br/>
+                            <span style="float:right;">分类： {{ article.column.title }}</span>
+
+                            <div class="btn-load-more">
+                                <a class="load-more" href="{% url 'article:article_detail' article.id %}">Read More</a>
                             </div>
                         </div>
                     </div>
-
-                    <div class="pic-inner">
-                        <h3 align="center"><a href="{% url 'article:article_detail' article.id %}" >{{ article.title }} </a></h3>
-                        <span style="float:right;">作者：   {{ article.author }}</span>
-                        <br/>
-                        <span style="float:right;">热度：   {{ article.total_views }}</span>
-                        <br/>
-                        <span style="float:right;">更新日期：  {{ article.updated }}</span>
-{#                        <p>{{ article.body }}</p>#}
-                        <div class="btn-load-more">
-                            <a class="load-more" href="{% url 'article:article_detail' article.id %}" >Read More</a>
-                        </div>
-                    </div>
-                </div>
                 {% endfor %}
             </div>
         </div>

@@ -1,6 +1,6 @@
 from django.contrib import admin
+from .models import ArticleColumn
 
-# 别忘了导入ArticlerPost
 from .models import ArticlePost
 
 class ArticleAdmin(admin.ModelAdmin):
@@ -9,3 +9,4 @@ class ArticleAdmin(admin.ModelAdmin):
 
 # 注册ArticlePost到admin中
 admin.site.register(ArticlePost, ArticleAdmin)
+admin.site.register(ArticleColumn)

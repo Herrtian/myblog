@@ -11,13 +11,16 @@
 
     <!-- 文章详情 -->
     <div class="first-content">
-        <div class="pic index2-picture" style="background: url({% static "assets/images/view.jpeg" %});">
+        <div class="pic index2-picture" style="background: url({% static "assets/images/acgbg2.png" %});">
             <div class="overlay"></div>
             <div class="content">
                 <h3>ARTICLE DETAIL</h3>
             </div>
         </div>
     </div>
+
+
+
     <div class="index2-content">
         <div class="container" style="background-color: rgba(255, 255, 255, 0.8);">
             <div class="row items1">
@@ -40,36 +43,63 @@
                     </div>
                 </div>
                 <div class="col-md-5">
-                    <img src="{% static "assets/images/pen.jpg" %}" alt="">
-                    <img src=" {% static "assets/images/about4.png" %} " alt="">
+                    <img src="{% static "assets/images/acgphoto.PNG" %}" alt="">
+                    <img src=" {% static "assets/images/acgphto2.PNG" %} " alt="">
                 </div>
-                <!-- 发表评论 -->
-                <hr>
-                {% if user.is_authenticated %}
-                    <div>
-                        <form
-                                action="{% url 'comment:post_comment' article.id %}"
-                                method="POST"
-                        >
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label for="body">
-                                    <strong>
-                                        我也要发言：
-                                    </strong>
-                                </label>
-                                <textarea
-                                        type="text"
-                                        class="form-control"
-                                        id="body"
-                                        name="body"
-                                        rows="2"></textarea>
+
+
+                <div class="blogsection4" style="background-color: rgba(255, 255, 255, 0.8);">
+                    <div class="container">
+                        <div class="items">
+                            <h3> {{ comments.count }} Comments</h3>
+                            <p>Join the discussion and tell us your opinion.</p>
+                        </div>
+
+                        {% for comment in comments %}
+                            <div class="row items4">
+                                <div class="col-md-2">
+                                    {% if profile.avatar %}
+                                        <div class="picture">
+                                            <img src="{{ profile.avatar.url }}">
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-10">
+                                    <div class="txt">
+                                        <h5>{{ comment.user }}</h5>
+                                        <span>{{ comment.created|date:"Y-m-d H:i:s" }}</span>
+                                        <div>{{ comment.body|safe }}</div>
+                                    </div>
+                                </div>
                             </div>
-                            <!-- 提交按钮 -->
-                            <button type="submit" class="btn btn-primary ">发送</button>
-                        </form>
+                        {% endfor %}
+
                     </div>
-                    <br>
+                </div>
+
+                {% if user.is_authenticated %}
+
+
+                    <div class="contact-content">
+                        <div class="container">
+                            <h5 class="item">Leave a reply</h5>
+                            <form class="row" action="{% url 'comment:post_comment' article.id %}"
+                                  method="POST">
+                                {% csrf_token %}
+
+                                <div class="col-md-12 col-xs-12 col-sm-6 form-area">
+
+                                    <div>
+                                        {{ comment_form.media }}
+                                        {{ comment_form.body }}
+                                    </div>
+                                    <br>
+                                    <input type="submit" value="Comment">
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 {% else %}
                     <br>
                     <h5 class="row justify-content-center">
@@ -77,32 +107,10 @@
                     </h5>
                     <br>
                 {% endif %}
-
-
-
-                <!-- 显示评论 -->
-                <h4>共有{{ comments.count }}条评论</h4>
-                <div>
-                    {% for comment in comments %}
-                        <hr>
-                        <p>
-                            <strong style="color: pink">
-                                {{ comment.user }}
-                            </strong> 于
-                            <span style="color: green">
-                    {{ comment.created|date:"Y-m-d H:i:s" }}
-                </span> 时说：
-                        </p>
-                        <pre style="font-family: inherit; font-size: 1em;">
-{{ comment.body }}</pre>
-                    {% endfor %}
-                </div>
             </div>
-
         </div>
     </div>
     </div>
-
     <script>
         // 删除文章的函数
         function confirm_delete() {
@@ -121,6 +129,11 @@
         }
     </script>
 
+    {% block script %}
+        <script>
+            $(".django-ckeditor-widget").removeAttr('style');
+        </script>
+    {% endblock script %}
 
 
 {% endblock content %}
